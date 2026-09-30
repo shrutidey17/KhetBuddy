@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>KhetBuddy — Farmer's Daily Decision Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ================= NAVIGATION ================= -->
+<header class="navbar">
+  <div class="nav-container">
+    <div class="logo" onclick="showPage('home')">🌱 KhetBuddy</div>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="#" onclick="showPage('home')">Home</a>
+      <a href="#" onclick="showPage('form')">My Farm</a>
+      <a href="#" onclick="showPage('timeline')">Crop Timeline</a>
+      <a href="#" onclick="showPage('sos')">Agriculture SOS</a>
+    </nav>
+
+    <button class="hamburger" id="hamburgerBtn" aria-label="Menu">☰</button>
+  </div>
+</header>
+
+<!-- ================= PAGE: HOME ================= -->
+<section id="page-home" class="page active">
+
+  <div class="hero">
+    <h1>🌱 KhetBuddy</h1>
+    <h2>Know Your Farm. Know Your Next Step.</h2>
+    <p class="subtitle">Your simple daily farming assistant that tells you what to focus on today.</p>
+    <button class="btn-primary big" onclick="showPage('form')">🌾 Create My Farm Plan</button>
+  </div>
+
+  <div class="feature-cards">
+    <div class="feature-card">
+      <div class="feature-icon">📅</div>
+      <h3>Daily Action Plan</h3>
+      <p>Know what to do today.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌱</div>
+      <h3>Crop Timeline</h3>
+      <p>Track your crop from sowing to harvest.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🆘</div>
+      <h3>Agriculture SOS</h3>
+      <p>Get quick guidance when your crop looks unusual.</p>
+    </div>
+  </div>
+
+  <div class="tagline-box">
+    <p>🚜 Most agriculture websites tell farmers what agriculture is.</p>
+    <p><strong>KhetBuddy tells farmers what to do next.</strong></p>
+  </div>
+
+</section>
+
+<!-- ================= PAGE: FARM FORM + ACTION PLAN ================= -->
+<section id="page-form" class="page">
+
+  <div class="section-heading">
+    <h2>🌾 Tell Us About Your Farm</h2>
+    <p>Fill in a few quick details to get today's action plan.</p>
+    <button class="btn-secondary small" onclick="fillDemoData()">✨ Fill Demo Data</button>
+  </div>
+
+  <form id="farmForm" class="farm-form">
+
+    <div class="form-group">
+      <label for="farmerName">Farmer Name</label>
+      <input type="text" id="farmerName" placeholder="e.g. Ramesh" required />
+    </div>
+
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input type="text" id="location" placeholder="e.g. Duliajan, Assam" required />
+    </div>
+
+    <div class="form-group">
+      <label for="crop">Crop</label>
+      <select id="crop" required>
+        <option value="">Select crop</option>
+        <option>Rice</option>
+        <option>Wheat</option>
+        <option>Maize</option>
+        <option>Mustard</option>
+        <option>Potato</option>
+        <option>Tomato</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="stage">Crop Growth Stage</label>
+      <select id="stage" required>
+        <option value="">Select stage</option>
+        <option>Sowing</option>
+        <option>Germination</option>
+        <option>Vegetative Growth</option>
+        <option>Flowering</option>
+        <option>Fruiting</option>
+        <option>Harvest</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="irrigation">Last Irrigation</label>
+      <select id="irrigation" required>
+        <option value="">Select option</option>
+        <option>Today</option>
+        <option>Yesterday</option>
+        <option>2–3 days ago</option>
+        <option>More than 3 days ago</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="problem">Visible Crop Problem</label>
+      <select id="problem" required>
+        <option value="">Select option</option>
+        <option>No problem</option>
+        <option>Yellow leaves</option>
+        <option>Brown spots</option>
+        <option>Holes in leaves</option>
+        <option>Wilting</option>
+        <option>Pest/insect visible</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="weather">Weather</label>
+      <select id="weather" required>
+        <option value="">Select weather</option>
+        <option>Sunny</option>
+        <option>Cloudy</option>
+        <option>Rain expected</option>
+        <option>Unknown</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn-primary big full-width">🌾 Generate My Farm Plan</button>
+  </form>
+
+  <!-- Result Card (hidden until form submitted) -->
+  <div id="resultCard" class="result-card hidden">
+
+    <div class="greeting" id="greetingText"></div>
+
+    <h2>🌾 Today's Farm Action Plan</h2>
+
+    <div class="crop-summary">
+      <div><span class="label">Crop</span><span id="resultCrop" class="value"></span></div>
+      <div><span class="label">Growth Stage</span><span id="resultStage" class="value"></span></div>
+    </div>
+
+    <div class="health-indicator" id="healthIndicator"></div>
+
+    <div class="plan-cards">
+      <div class="plan-card water">
+        <div class="plan-icon">💧</div>
+        <h4>WATER</h4>
+        <p id="planWater"></p>
+      </div>
+      <div class="plan-card task">
+        <div class="plan-icon">🌱</div>
+        <h4>TASK</h4>
+        <p id="planTask"></p>
+      </div>
+      <div class="plan-card watch">
+        <div class="plan-icon">🐛</div>
+        <h4>WATCH FOR</h4>
+        <p id="planWatch"></p>
+      </div>
+      <div class="plan-card weather">
+        <div class="plan-icon">🌦️</div>
+        <h4>WEATHER</h4>
+        <p id="planWeather"></p>
+      </div>
+    </div>
+
+    <div class="priority-badge">
+      <div class="priority-label">⚠️ TODAY'S PRIORITY</div>
+      <div class="priority-text" id="planPriority"></div>
+    </div>
+
+    <button class="btn-secondary" onclick="showPage('timeline')">🌱 View Crop Timeline</button>
+  </div>
+
+</section>
+
+<!-- ================= PAGE: CROP TIMELINE ================= -->
+<section id="page-timeline" class="page">
+
+  <div class="section-heading">
+    <h2>🌱 My Crop Journey</h2>
+    <p>Track where your crop is in its growth cycle.</p>
+  </div>
+
+  <div class="timeline" id="timelineTrack">
+    <div class="timeline-step" data-stage="Sowing"><span class="t-icon">🌱</span><span class="t-label">Sowing</span></div>
+    <div class="timeline-step" data-stage="Germination"><span class="t-icon">🌿</span><span class="t-label">Germination</span></div>
+    <div class="timeline-step" data-stage="Vegetative Growth"><span class="t-icon">🌾</span><span class="t-label">Vegetative Growth</span></div>
+    <div class="timeline-step" data-stage="Flowering"><span class="t-icon">🌼</span><span class="t-label">Flowering</span></div>
+    <div class="timeline-step" data-stage="Fruiting"><span class="t-icon">🍅</span><span class="t-label">Fruiting</span></div>
+    <div class="timeline-step" data-stage="Harvest"><span class="t-icon">🌾</span><span class="t-label">Harvest</span></div>
+  </div>
+
+  <div class="checklist-box">
+    <h3 id="checklistTitle">Today's Checklist</h3>
+    <ul id="checklistItems"></ul>
+    <p class="hint">✅ Your progress is saved automatically on this device.</p>
+  </div>
+
+</section>
+
+<!-- ================= PAGE: AGRICULTURE SOS ================= -->
+<section id="page-sos" class="page">
+
+  <div class="section-heading">
+    <h2>🆘 My Crop Looks Different</h2>
+    <p>Not sure what's happening to your crop? Tell KhetBuddy what you see.</p>
+  </div>
+
+  <div class="sos-box">
+
+    <label class="upload-label" for="imageUpload">
+      📷 Upload a photo of your crop (optional)
+    </label>
+    <input type="file" id="imageUpload" accept="image/*" />
+    <div id="imagePreviewWrap" class="image-preview-wrap hidden">
+      <img id="imagePreview" src="" alt="Uploaded crop image preview" />
+    </div>
+
+    <h3>What does the crop look like?</h3>
+    <div class="symptom-grid" id="symptomGrid">
+      <button class="symptom-btn" data-symptom="Yellow leaves">🍃 Yellow leaves</button>
+      <button class="symptom-btn" data-symptom="Brown spots">🟤 Brown spots</button>
+      <button class="symptom-btn" data-symptom="Holes in leaves">🕳️ Holes in leaves</button>
+      <button class="symptom-btn" data-symptom="Wilting">💧 Wilting</button>
+      <button class="symptom-btn" data-symptom="Insects visible">🐛 Insects visible</button>
+      <button class="symptom-btn" data-symptom="Stunted growth">🌱 Stunted growth</button>
+    </div>
+
+    <div id="sosResult" class="sos-result hidden">
+      <h4>Possible Issue</h4>
+      <p id="sosIssue"></p>
+
+      <h4>🔎 What to Check</h4>
+      <p id="sosCheck"></p>
+
+      <h4>⚠️ What NOT to Do</h4>
+      <p id="sosAvoid"></p>
+
+      <h4>👨‍🌾 When to Contact an Expert</h4>
+      <p id="sosExpert"></p>
+
+      <p class="disclaimer">This is a general guide, not a diagnosis. For serious or spreading problems, please consult a local agricultural expert.</p>
+    </div>
+
+  </div>
+
+</section>
+
+<footer class="footer">
+  <p>🌱 KhetBuddy — Built for farmers, made simple. Educational prototype.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
